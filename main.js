@@ -105,9 +105,7 @@ router.get('/models/:id/interface', function(req, res) {
 });
 
 app.use('/api', router);
-//app.get('*', function(req, res) {
-//    console.log(req);
-//});
-var server = app.listen(3000, function() {
+
+var server = app.listen(80, function() {
     console.log("Listening to port %s", server.address().port);
 });
