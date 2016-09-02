@@ -1,0 +1,12 @@
+# Ignore node modules (are downloables) 
+
+node_modules/
+
+# Ignore backup files 
+*~
+*.swp
+*.swo
+\#*\#
+\#*
+
+.DS_Store

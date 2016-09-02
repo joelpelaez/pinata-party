@@ -1,0 +1,17 @@
+{
+  "name": "pinata-node",
+  "version": "0.0.1",
+  "description": "REST API implementation for Pinata",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-validator": "^2.20.8",
+    "mongodb": "^2.2.8",
+    "path": "^0.12.7",
+    "pg": "^6.1.0"
+  },
+  "main": "main.js",
+  "author": "Joel Pelaez Jorge",
+  "license": "GPL-3.0"
+}
