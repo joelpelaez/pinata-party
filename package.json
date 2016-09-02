@@ -13,5 +13,8 @@
   },
   "main": "main.js",
   "author": "Joel Pelaez Jorge",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "scripts": {
+    "start": "node main.js"
+  }
 }
