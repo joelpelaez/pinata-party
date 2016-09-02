@@ -104,6 +104,28 @@ window.addEventListener('resize', function(event) {
 }, true);
 
 /**
+ * Selección de objetos: solo trabaja con el primer objeto de la colisión.
+ */
+function touchObject(evt) {
+    var rect = renderer.domElement.getBoundingClientRect();
+    console.log(evt.clientX - rect.left);
+    console.log(evt.clientY - rect.top);
+    var mouse = new THREE.Vector2( ( ( evt.clientX - rect.left ) / rect.width ) * 2 - 1,   //x
+                                  -( ( evt.clientY - rect.top ) / rect.height ) * 2 + 1);   //y
+    var raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( scene.children, true );
+    // Change color if hit block
+    if ( intersects.length > 0 ) {
+        console.log(intersects);
+        if (active_controller) active_controller.css("display", "none");
+            active_controller = controllers[intersects[0].object.name.split('.')[0]];
+        if (active_controller !== undefined)
+            active_controller.css("display", "initial");
+    }
+}
+
+/**
  * Sistema de rotación por eventos del ratón: no aplica touch
  */
 var moved = false;
@@ -137,20 +159,7 @@ function onMouseDown(evt) {
 function onMouseUp(evt) {
     evt.preventDefault();
     if (!moved) {
-        var rect = renderer.domElement.getBoundingClientRect();
-        console.log(evt.clientX - rect.left);
-        console.log(evt.clientY - rect.top);
-
-        var mouse = new THREE.Vector2( ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1,   //x
-                                      -( ( event.clientY - rect.top ) / rect.height ) * 2 + 1);   //y
-        var raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera( mouse, camera );
-        var intersects = raycaster.intersectObjects( scene.children, true );
-        // Change color if hit block
-        if ( intersects.length > 0 ) {
-            console.log(intersects);
-            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-        }
+        touchObject(evt);
         moved = false;
     }
     mouseDown = false;
@@ -196,6 +205,9 @@ function onTouchMove(evt) {
     var touch = evt.changedTouches[0];
     var x = touch.clientX - touchX;
     var y = touch.clientY - touchY;
+    if (x > 1 || y > 1) {
+        moved = true;
+    }
     rotateScene(x, y);
     touchX = touch.clientX;
     touchY = touch.clientY;
@@ -204,11 +216,16 @@ function onTouchMove(evt) {
 function onTouchEnd(evt) {
     evt.preventDefault();
     touchDown = false;
+    if (!moved) {
+        touchObject(evt.changedTouches[0]);
+        moved = false;
+    }
 }
 
 function onTouchStart(evt) {
     evt.preventDefault();
     touchDown = true;
+    moved = false;
     var touch = evt.changedTouches[0];
     touchX = touch.clientX;
     touchY = touch.clientY;

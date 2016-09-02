@@ -1,4 +1,5 @@
-
+var controllers = {};
+var active_controller = undefined;
 
 /**
  * Inicializa el manejo de los controles del modelo, solo puede llamarse si
@@ -33,6 +34,7 @@ function initControls() {
             objnode["texture_editable"] === true) {
             createTexturePicker(obj, container);
         }
+        controllers[objnode.name] = container;
     }
 }
 
