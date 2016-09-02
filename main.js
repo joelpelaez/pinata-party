@@ -10,7 +10,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var connectionString = 'postgres://localhost:5432/pinata';
+var connectionString = (process.env.DATABASE_URL || 'postgres://localhost:5432/pinata');
 
 var router = express.Router();
 
