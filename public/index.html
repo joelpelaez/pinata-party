@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <title>Piñata Interactiva</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <header>
+                    <h1>Piñata interactiva</h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-6">
+                <div id="glcanvas">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-6">
+                <div id="dynamic-controls">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js"></script>
+    <script src="js/app/models.js"></script>
+    <script src="js/app/images.js"></script>
+    <script src="js/app/scene.js"></script>
+    <script src="js/app/init.js"></script>
+    <script src="js/app/edit-model.js"></script>
+    <script src="js/app/controls.js"></script>
+    <script>
+        // Inicaliza el modelo especificado
+        loadModelList(function() {
+            loadInterface(models[0].id, function() {
+                init(models[0].id, current_interface);
+            })
+        })
+    </script>
+</body>
+</html>
