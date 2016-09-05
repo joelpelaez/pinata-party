@@ -54,18 +54,33 @@ function createTexturePicker(obj, container) {
     var o = $("<div/>");
     o.attr('data-name', 'texture-' + obj.name);
     container.append(o);
-    for (var texture in images) {
-        if (images[texture].url === undefined)
-            continue;
-        var url = images[texture].url;
-        var img = $('<img/>');
-        img.attr('src', url);
-        img.attr('width', '64');
-        img.on('click', function(event) {
-            textureHelper(obj, url);
-        });
-        o.append(img);
-    }
+    $.getJSON('/api/emblems', function(data) {
+        console.log(data);
+        for (var texture in data) {
+            var figure = $('<figure>');
+            figure.addClass('texture-container');
+
+            var name = data[texture].name;
+            var title = $('<figcaption>');
+            title.text(name);
+            title.addClass('texture-title');
+
+            var url = data[texture].filename;
+            var img = $('<img/>');
+            img.attr('src', url);
+            img.attr('width', '128');
+            img.addClass('texture-image');
+            img.on('click', (function(url) {
+                return function(event) {
+                    textureHelper(obj, url);
+                }
+            }(url)));
+            console.log(img);
+            figure.append(img);
+            figure.append(title);
+            o.append(figure);
+        }
+    });
 }
 
 function colorHelper(obj, picker) {
