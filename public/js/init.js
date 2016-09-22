@@ -28,14 +28,6 @@ function initScene() {
     animate();
 }
 
-/*+
- * Manejo de estadisticas: solo para depuración, posteriormente se
- * eliminará.
- */
-var stats = new Stats();
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild(stats.dom);
-
 /**
  * init: Inicializa los objetos para la renderización.
  */
@@ -45,7 +37,7 @@ function init(model_id, interface) {
      * el ancho y se calcula el posible alto.
      */
     container = $("#glcanvas");
-    width = container.innerWidth();
+    width = Math.floor(container.innerWidth());
     height = width;
 
     /**
@@ -68,20 +60,18 @@ function init(model_id, interface) {
     canvas = renderer.domElement;
     addMouseHandler(canvas);
     addTouchHandler(canvas);
+    addDragDropHandler(canvas);
     container.append(canvas);
     current = interface;
-    loadScene("/api/models/" + model_id, "/textures/");
+    loadScene("/api/pinata/models/" + model_id, "/textures/");
 }
 
 /**
  * animate: dibuja el contenido de manera periodica a 60 fps
  */
 function animate() {
-    stats.begin();
-
     renderer.render(scene, camera);
 
-    stats.end();
     // Reestablecer el dibujado.
     requestAnimationFrame(animate);
 }
@@ -92,12 +82,12 @@ function animate() {
  */
 var old_width;
 window.addEventListener('resize', function(event) {
-    width = container.width();
-    height = width;
-    if (camera === undefined || width === undefined) {
+    if (container == undefined || camera === undefined || width === undefined) {
         // No actualizar nada si no se ha inicializado.
         return;
     }
+    width = Math.floor(container.width());
+    height = width;
     camera.aspect = 1;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
@@ -106,10 +96,10 @@ window.addEventListener('resize', function(event) {
 /**
  * Selección de objetos: solo trabaja con el primer objeto de la colisión.
  */
+ var moved = false;
+
 function touchObject(evt) {
     var rect = renderer.domElement.getBoundingClientRect();
-    console.log(evt.clientX - rect.left);
-    console.log(evt.clientY - rect.top);
     var mouse = new THREE.Vector2( ( ( evt.clientX - rect.left ) / rect.width ) * 2 - 1,   //x
                                   -( ( evt.clientY - rect.top ) / rect.height ) * 2 + 1);   //y
     var raycaster = new THREE.Raycaster();
@@ -121,15 +111,13 @@ function touchObject(evt) {
         if (active_controller) active_controller.css("display", "none");
             active_controller = controllers[intersects[0].object.name.split('.')[0]];
         if (active_controller !== undefined)
-            active_controller.css("display", "initial");
+            active_controller.css("display", "block");
     }
 }
 
 /**
  * Sistema de rotación por eventos del ratón: no aplica touch
  */
-var moved = false;
-
 var mouseDown = false,
     mouseX = 0,
     mouseY = 0;
@@ -244,4 +232,28 @@ function addTouchHandler(canvas) {
     canvas.addEventListener('touchleave', function (e) {
         onTouchEnd(e);
     }, false);
+}
+
+function onDragOver(evt) {
+    evt.preventDefault();
+}
+
+function onDrop(evt) {
+    evt.preventDefault();
+    var data = evt.dataTransfer.getData("text");
+    var rect = renderer.domElement.getBoundingClientRect();
+    var mouse = new THREE.Vector2( ( ( evt.clientX - rect.left ) / rect.width ) * 2 - 1,   //x
+                                  -( ( evt.clientY - rect.top ) / rect.height ) * 2 + 1);   //y
+    var raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( scene.children, true );
+    // Change color if hit block
+    if ( intersects.length > 0 ) {
+        setTexture(intersects[0].object.name, data);
+    }
+}
+
+function addDragDropHandler(canvas) {
+    canvas.addEventListener('dragover', onDragOver, false);
+    canvas.addEventListener('drop', onDrop, false);
 }

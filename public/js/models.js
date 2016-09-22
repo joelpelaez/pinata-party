@@ -17,21 +17,21 @@ var current_interface;
  */
 
 function loadModelList(callback) {
-    $.getJSON('/api/models/', function(data) {
+    $.getJSON('/api/pinata/models/', function(data) {
         models = data;
         callback();
     });
 }
 // unused 
 function loadModel(id, callback) {
-    $.getJSON('/api/models/' + id, function(data) {
+    $.getJSON('/api/pinata/models/' + id, function(data) {
         current_model = data;
         callback()
     });
 }
 
 function loadInterface(id, callback) {
-    $.getJSON('/api/models/' + id + '/interface', function(data) {
+    $.getJSON('/api/pinata/models/' + id + '/interface', function(data) {
         current_interface = data;
         callback();
     });

@@ -24,15 +24,17 @@ function initControls() {
         root_container.append(container);
         if (objnode["name"] !== undefined) {
             obj = scene.getObjectByName(objnode["name"]);
-            $("<h2>" + objnode["name"] + "</h2>").appendTo(container);
+            $("<h2>" + objnode["show_name"] + "</h2>").appendTo(container);
         }
         if (objnode["color_editable"] !== undefined &&
             objnode["color_editable"] === true) {
             createColorPicker(obj, container);
+            container.addClass('color-picker');
         }
         if (objnode["texture_editable"] !== undefined &&
             objnode["texture_editable"] === true) {
             createTexturePicker(obj, container);
+            container.addClass('character-picker');
         }
         controllers[objnode.name] = container;
     }
@@ -42,9 +44,11 @@ function createColorPicker(obj, container) {
     var o = $("<input/>");
     o.attr('type', 'color');
     o.attr('name', 'picker-' + obj.name);
-    o.on('input', function(event) {
-        colorHelper(obj, o)
-    });
+    o.on('input', function(obj, o) {
+        return function(event) {
+            colorHelper(obj, o);
+        }
+    }(obj, o));
     container.append("Color: <br>");
     container.append(o);
     container.append("<br>");
@@ -54,7 +58,7 @@ function createTexturePicker(obj, container) {
     var o = $("<div/>");
     o.attr('data-name', 'texture-' + obj.name);
     container.append(o);
-    $.getJSON('/api/emblems', function(data) {
+    $.getJSON('/api/pinata/emblems', function(data) {
         console.log(data);
         for (var texture in data) {
             var figure = $('<figure>');
@@ -70,11 +74,16 @@ function createTexturePicker(obj, container) {
             img.attr('src', url);
             img.attr('width', '128');
             img.addClass('texture-image');
-            img.on('click', (function(url) {
+            img.on('click', (function(obj, url) {
                 return function(event) {
                     textureHelper(obj, url);
                 }
-            }(url)));
+            }(obj, url)));
+            img.on('dragstart', (function(url, img) {
+                return function(event) {
+                    event.originalEvent.dataTransfer.setData("text", url);
+                }
+            }(url, img)));
             console.log(img);
             figure.append(img);
             figure.append(title);
@@ -89,7 +98,29 @@ function colorHelper(obj, picker) {
 }
 
 function textureHelper(obj, texUrl) {
-    console.log(obj.name)
-    console.log(texUrl)
     setTexture(obj.name, texUrl);
+}
+
+/* selection menus */
+function showPinatas() {
+}
+
+function showCharacterSelection() {
+    for (var name in controllers) {
+        if (controllers[name].hasClass('character-picker')) {
+            controllers[name].css('display', 'block');
+        } else {
+            controllers[name].css('display', 'none');
+        }
+    }
+}
+
+function showColorSelection() {
+    for (var name in controllers) {
+        if (controllers[name].hasClass('color-picker')) {
+            controllers[name].css('display', 'block');
+        } else {
+            controllers[name].css('display', 'none');
+        }
+    }
 }

@@ -5,9 +5,12 @@
   "dependencies": {
     "assert": "^1.4.1",
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "express-validator": "^2.20.8",
+    "jsonwebtoken": "^7.1.9",
     "mongodb": "^2.2.8",
+    "morgan": "^1.7.0",
     "path": "^0.12.7",
     "pg": "^6.1.0"
   },
