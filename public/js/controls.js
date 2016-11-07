@@ -59,7 +59,6 @@ function createTexturePicker(obj, container) {
     o.attr('data-name', 'texture-' + obj.name);
     container.append(o);
     $.getJSON('/api/pinata/emblems', function(data) {
-        console.log(data);
         for (var texture in data) {
             var figure = $('<figure>');
             figure.addClass('texture-container');
@@ -84,7 +83,6 @@ function createTexturePicker(obj, container) {
                     event.originalEvent.dataTransfer.setData("text", url);
                 }
             }(url, img)));
-            console.log(img);
             figure.append(img);
             figure.append(title);
             o.append(figure);

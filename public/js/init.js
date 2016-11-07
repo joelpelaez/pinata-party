@@ -44,7 +44,7 @@ function init(model_id, interface) {
      * Se calcula es aspecto (proporción de vista)
      * de la camara.
      */
-    aspect = 1
+    aspect = 1;
 
     /**
      * Se crea el objeto de renderización y se establede un tamaño
@@ -94,20 +94,26 @@ window.addEventListener('resize', function(event) {
 }, true);
 
 /**
- * Selección de objetos: solo trabaja con el primer objeto de la colisión.
+ * Calculo de posición de un objeto 3D en el canvas, utiliza la información del evento.
  */
- var moved = false;
-
-function touchObject(evt) {
+function objectInPosition(evt) {
     var rect = renderer.domElement.getBoundingClientRect();
     var mouse = new THREE.Vector2( ( ( evt.clientX - rect.left ) / rect.width ) * 2 - 1,   //x
                                   -( ( evt.clientY - rect.top ) / rect.height ) * 2 + 1);   //y
     var raycaster = new THREE.Raycaster();
     raycaster.setFromCamera( mouse, camera );
     var intersects = raycaster.intersectObjects( scene.children, true );
-    // Change color if hit block
-    if ( intersects.length > 0 ) {
-        console.log(intersects);
+    return intersects;
+}
+
+/**
+ * Selección de objetos: solo trabaja con el primer objeto de la colisión.
+ */
+ var moved = false;
+
+function touchObject(evt) {
+    var intersects = objectInPosition(evt);
+    if (intersects.length > 0) {
         if (active_controller) active_controller.css("display", "none");
             active_controller = controllers[intersects[0].object.name.split('.')[0]];
         if (active_controller !== undefined)
@@ -159,18 +165,10 @@ function onMouseLeave(evt) {
 }
 
 function addMouseHandler(canvas) {
-    canvas.addEventListener('mousemove', function (e) {
-        onMouseMove(e);
-    }, false);
-    canvas.addEventListener('mousedown', function (e) {
-        onMouseDown(e);
-    }, false);
-    canvas.addEventListener('mouseup', function (e) {
-        onMouseUp(e);
-    }, false);
-    canvas.addEventListener('mouseleave', function (e) {
-        onMouseLeave(e);
-    }, false);
+    canvas.addEventListener('mousemove', onMouseMove, false);
+    canvas.addEventListener('mousedown', onMouseDown, false);
+    canvas.addEventListener('mouseup', onMouseUp, false);
+    canvas.addEventListener('mouseleave', onMouseLeave, false);
 }
 
 function rotateScene(deltaX, deltaY) {
@@ -220,18 +218,10 @@ function onTouchStart(evt) {
 }
 
 function addTouchHandler(canvas) {
-    canvas.addEventListener('touchmove', function (e) {
-        onTouchMove(e);
-    }, false);
-    canvas.addEventListener('touchend', function (e) {
-        onTouchEnd(e);
-    }, false);
-    canvas.addEventListener('touchstart', function (e) {
-        onTouchStart(e);
-    }, false);
-    canvas.addEventListener('touchleave', function (e) {
-        onTouchEnd(e);
-    }, false);
+    canvas.addEventListener('touchmove', onTouchMove, false);
+    canvas.addEventListener('touchend', onTouchEnd, false);
+    canvas.addEventListener('touchstart', onTouchStart, false);
+    canvas.addEventListener('touchleave', onTouchEnd, false);
 }
 
 function onDragOver(evt) {
@@ -241,14 +231,8 @@ function onDragOver(evt) {
 function onDrop(evt) {
     evt.preventDefault();
     var data = evt.dataTransfer.getData("text");
-    var rect = renderer.domElement.getBoundingClientRect();
-    var mouse = new THREE.Vector2( ( ( evt.clientX - rect.left ) / rect.width ) * 2 - 1,   //x
-                                  -( ( evt.clientY - rect.top ) / rect.height ) * 2 + 1);   //y
-    var raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera( mouse, camera );
-    var intersects = raycaster.intersectObjects( scene.children, true );
-    // Change color if hit block
-    if ( intersects.length > 0 ) {
+    var intersects = objectInPosition(evt);
+    if (intersects.length > 0) {
         setTexture(intersects[0].object.name, data);
     }
 }
