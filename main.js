@@ -23,8 +23,8 @@ app.use(cookie());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 
-var pinata = require('./pinata.js');
-var user   = require('./user.js');
+var pinata = require('./model.js');
+var user   = require('./saleman.js');
 //var auth   = require('./auth.js');
 app.use('/api/pinata', pinata);
 app.use('/api/user', user);

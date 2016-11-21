@@ -26,7 +26,7 @@ CREATE TABLE model
 	data jsonb NOT NULL,
 	kind varchar(40) NOT NULL,
 	num_points numeric(2) NOT NULL,
-	provider_id integer NOT NULL
+	provider_id integer NULL
 );
 
 CREATE INDEX ON model (provider_id);
