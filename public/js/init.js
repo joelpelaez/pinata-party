@@ -1,7 +1,18 @@
 /**
- * Variables de tamaño del canvas
+ * Ancho del canvas
  */
-var width, height, aspect;
+var width;
+
+/**
+ * Largo del canvas.
+ */
+var height;
+
+/**
+ * Aspecto de imagen. Basado en las medidas del canvas.
+ */
+var aspect;
+
 /**
  *  Objeto DOM del contenedor del canvas 
  */
@@ -28,6 +39,27 @@ function initScene() {
     animate();
 }
 
+// Rewrite ImageLoader load action, update the view if a new image is loaded.
+THREE.ImageLoader.prototype.load = function (a,b,c,d) {
+    var e = document.createElementNS("http://www.w3.org/1999/xhtml","img");
+    e.onload = function() {
+        URL.revokeObjectURL(e.src);
+        b && b(e);
+        animate();
+    };
+    if (0 === a.indexOf("data:")) 
+        e.src = a;
+    else {
+        var f = new THREE.XHRLoader(this.manager);
+        f.setPath(this.path);
+        f.setResponseType("blob");
+        f.load(a, function(a) {
+            e.src = URL.createObjectURL(a)
+        },c,d);
+    }
+    return e;
+}
+
 /**
  * init: Inicializa los objetos para la renderización.
  */
@@ -38,13 +70,13 @@ function init(model_id, interface) {
      */
     container = $("#glcanvas");
     width = Math.floor(container.innerWidth());
-    height = width;
+    height = Math.floor(width / 1.66);
 
     /**
      * Se calcula es aspecto (proporción de vista)
      * de la camara.
      */
-    aspect = 1;
+    aspect = width / height;
 
     /**
      * Se crea el objeto de renderización y se establede un tamaño
@@ -70,10 +102,11 @@ function init(model_id, interface) {
  * animate: dibuja el contenido de manera periodica a 60 fps
  */
 function animate() {
+    if (container == undefined || camera === undefined || width === undefined) {
+        // No actualizar nada si no se ha inicializado.
+        return;
+    }
     renderer.render(scene, camera);
-
-    // Reestablecer el dibujado.
-    requestAnimationFrame(animate);
 }
 
 /**
@@ -87,10 +120,11 @@ window.addEventListener('resize', function(event) {
         return;
     }
     width = Math.floor(container.width());
-    height = width;
-    camera.aspect = 1;
+    height = Math.floor(width / 1.66);
+    camera.aspect = aspect;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
+    animate();
 }, true);
 
 /**
@@ -175,6 +209,7 @@ function rotateScene(deltaX, deltaY) {
     var center = scene.getObjectByName(current_interface.model.center.name);
     center.rotateOnAxis(new THREE.Vector3(0, 1, 0), -deltaX / 100);
     center.rotateOnAxis(new THREE.Vector3(1, 0, 0), deltaY / 100);
+    animate();
 }
 
 /**

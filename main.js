@@ -13,8 +13,8 @@ var express    = require('express'),
     jwt        = require('jsonwebtoken');
 
 app.set('port', (process.env.PORT || 5000));
-app.set('secret', (process.env.SECRET || 'example'));
-app.set('dburl', (process.env.DATABASE_URL || 'postgres://localhost:5432/pinata'));
+app.set('secret', (process.env.SECRET || 'postgres'));
+app.set('dburl', (process.env.DATABASE_URL || 'postgres://postgres@localhost:5432/pinata_legacy'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

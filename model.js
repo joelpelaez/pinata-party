@@ -13,7 +13,7 @@ var connectionString = app.get('dburl');
  */
 router.get('/models', function(req, res) {
     var results = [];
-    var queryString = 'SELECT id, name, num_points, kind FROM pinata_control.model WHERE 1 = 1 ';
+    var queryString = 'SELECT id, name, num_points, center FROM pinata_model WHERE 1 = 1 ';
     var args = [];
     var count = 1;
     if (req.query.name) {
@@ -73,10 +73,10 @@ router.get('/models/:id', function(req, res) {
             return res.status(500).json({ success: false, data: err});
         }
 
-        var query = client.query('SELECT data FROM pinata_control.model WHERE id = $1 LIMIT 1', [req.params.id]);
+        var query = client.query('SELECT model_data FROM pinata_model WHERE id = $1 LIMIT 1', [req.params.id]);
 
         query.on('row', function(row) {
-            result = row['data'];
+            result = row['model_data'];
         });
 
         query.on('end', function() {
@@ -101,7 +101,7 @@ router.get('/models/:id/interface', function(req, res) {
             return res.status(500).json({ success: false, data: err});
         }
 
-        var query = client.query('SELECT interface_model FROM pinata_control.interface WHERE model_id = $1 LIMIT 1', [req.params.id]);
+        var query = client.query('SELECT interface_model FROM pinata_interface WHERE model_id = $1 LIMIT 1', [req.params.id]);
 
         query.on('row', function(row) {
             result = row['interface_model'];
@@ -132,9 +132,9 @@ router.get('/emblems', function(req, res) {
         }
 
         if (req.query.search) {
-            query = client.query('SELECT * FROM pinata_control.emblem WHERE name LIKE $1', [req.query.search]);
+            query = client.query('SELECT * FROM pinata_emblem WHERE name LIKE $1', [req.query.search]);
         } else {
-            query = client.query('SELECT * FROM pinata_control.emblem');
+            query = client.query('SELECT * FROM pinata_emblem');
         }
 
         query.on('row', function(row) {

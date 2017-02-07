@@ -1,0 +1,58 @@
+/**
+ * GoodParty Web Style. Use Bootstrap design.
+ * Style Guide pendient.
+ */
+@font-face {
+    font-family: "Palanquin";
+    src: url('../fonts/palanquin/palanquin-regular.ttf');
+}
+
+body {
+    background-color: rgb(255, 255, 120);
+}
+
+body p {
+    font-family: "Palanquin", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #aa00aa;
+}
+
+.navbar a {
+    color: aliceblue;
+}
+
+.nav > li > a:focus, .nav > li > a:hover {
+    background-color: #dd33dd;
+}
+
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+    background-color: #dd33dd;
+    border-color: #ffaaff;
+}
+
+.navbar-goodparty {
+    background-image: linear-gradient(to bottom, #ff77ff 0, #ff00ff 100%);
+    background-repeat: repeat-x;
+    border-color: #ffaaff;
+}
+
+.navbar-goodparty .icon-bar {
+    background-color: aliceblue;
+}
+
+.btn-goodparty {
+    background-image: linear-gradient(to bottom, #ee55ee 0, #ee00ee 100%);
+    background-repeat: no-repeat;
+    border-color: #ee33ee;
+    color: white;
+}
+
+.btn-goodparty:hover {
+    color: aliceblue;
+}
+
+.btn-goodparty:active {
+    background-color: #ee00ee;
+}

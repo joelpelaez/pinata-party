@@ -12,7 +12,7 @@ var active_controller = undefined;
 function initControls() {
     root_container = $("#dynamic-controls");
     for (var name in current_interface.model) {
-        // Jump non object nodes as "extra info"
+        // Skip non-object nodes as "extra info"
         if (typeof(current_interface.model[name]) !== "object")
             continue;
 
@@ -69,9 +69,8 @@ function createTexturePicker(obj, container) {
             title.addClass('texture-title');
 
             var url = data[texture].filename;
-            var img = $('<img/>');
+            var img = $('<img>');
             img.attr('src', url);
-            img.attr('width', '128');
             img.addClass('texture-image');
             img.on('click', (function(obj, url) {
                 return function(event) {
@@ -93,6 +92,7 @@ function createTexturePicker(obj, container) {
 function colorHelper(obj, picker) {
     var color = new THREE.Color(picker.val());
     obj.material.color = color;
+    animate();
 }
 
 function textureHelper(obj, texUrl) {
