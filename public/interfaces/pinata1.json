@@ -1,0 +1,24 @@
+{                                                                                               
+    "name":"Piñata 1",                                                                          
+    "description":"Piñata de cinco conos de personajes",                                        
+    "model": {                                                                                  
+        "center":{                                                                              
+            "name":"Cylinder",                                                                  
+            "show_name": "Centro",                                                              
+            "color_editable":false,                                                             
+            "texture_editable":false                                                            
+        },                                                                                      
+        "points":{                                                                              
+            "name":"Cone",                                                                      
+            "show_name": "Conos",                                                               
+            "color_editable":true,                                                              
+            "texture_editable":false                                                            
+        },                                                                                      
+        "image":{                                                                               
+            "name":"Circle",                                                                    
+            "show_name": "Personaje",                                                           
+            "color_editable":false,                                                             
+            "texture_editable":true                                                             
+        }                                                                                       
+    }                                                                                           
+}

@@ -57,6 +57,15 @@
     color: cornflowerblue;
 }
 
+#dynamic-controls {
+    height: 300px;
+    overflow: scroll;
+}
+
+.center-image {
+    text-align: center;
+}
+
 @media(max-width: 767px ) {
     #dynamic-controls {
         height: 200px;

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/goodparty-theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Piñata Interactiva</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-goodparty">
+            <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Good Party</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="modelos.html">Diseño</a></li>
+                    <li><a href="contact.html">Contacto</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Panel de diseño</h1>
+        <!--
+        <div class="row menu-selection">
+            <div class="col-xs-4">
+                <a link="#" class="btn btn-default" onclick="showPinatas()">Piñatas</a>
+            </div>
+            <div class="col-xs-4">
+                <a link="#" class="btn btn-default" onclick="showCharacterSelection()">Personajes</a>
+            </div>
+            <div class="col-xs-4">
+                <a link="#" class="btn btn-default" onclick="showColorSelection()">Colores</a>
+            </div>
+        </div>
+        -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8">
+                <div id="glcanvas">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <h2>Modelos de piñatas</h2>
+                <div id="model-list">
+                </div>
+                <div id="dynamic-controls">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/vendor/jquery-3.1.0.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/three.min.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/scene.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/edit-model.js"></script>
+    <script src="js/controls.js"></script>
+    <script>
+        // Inicaliza el modelo especificado
+        loadModelList(function() {
+            var list = $("<ul/>");
+            for (var i in models) {
+
+                var model = models[i];
+                var enlace = $("<a href='#''>" + model.name + "</a>");
+                enlace.click(function(model) {
+                    return function() {
+                        loadInterfaceByName(model.location, function() {
+                            removeOld();
+                            init(model.location, current_interface);
+                        });
+                    }
+                }(model));
+                list.append($("<li/>").html(enlace));
+            }
+            $("#model-list").append(list);
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+
+@-webkit-keyframes girando {
+  from { -webkit-transform: rotateY(0deg);    }
+  to   { -webkit-transform: rotateY(-360deg); }
+}
+#contenedor {
+   margin: 30px auto;
+   -webkit-perspective: 600px;
+}
+#girando {
+   -webkit-animation-name: girando;
+   -webkit-animation-timing-function: linear;
+   -webkit-animation-iteration-count: infinite;
+   -webkit-animation-duration: 3s;
+   -webkit-transform-style: preserve-3d;
+}

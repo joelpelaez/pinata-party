@@ -1,0 +1,48 @@
+{                                                                                                 
+    "name":"Piñata 2",                                                                            
+    "description":"Piñata de cinco conos de personajes",                                          
+    "model":{                                                                                     
+        "center": {
+            "name":"Center",
+            "show_name":"Centro",
+            "color_editable":false,
+            "texture_editable":false
+        },
+        "points": {                
+            "name":"Cone",        
+            "show_name": "Conos", 
+            "color_editable":true,
+            "texture_editable":false 
+        },
+        "image":{                    
+            "name":"Emblem",         
+            "show_name": "Personaje",
+            "color_editable":false,  
+            "texture_editable":true  
+        },
+        "paper3":{                    
+            "name":"Papel3",         
+            "show_name": "Colores del papel",
+            "color_editable":true,  
+            "texture_editable":false  
+        },
+        "paper2":{                    
+            "name":"Papel2",         
+            "show_name": "Colores del papel",
+            "color_editable":true,  
+            "texture_editable":false  
+        },
+        "paper1":{                    
+            "name":"Papel1",         
+            "show_name": "Colores del papel",
+            "color_editable":true,  
+            "texture_editable":false  
+        },
+        "fondo":{
+            "name": "Plane",
+            "show_name": "Fondo",
+            "color_editable": true,
+            "texture_editable": false
+        }
+    }
+}

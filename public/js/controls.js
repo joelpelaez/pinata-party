@@ -1,4 +1,6 @@
+// Lista de controles
 var controllers = {};
+// Control activo
 var active_controller = undefined;
 
 /**
@@ -15,8 +17,8 @@ function initControls() {
         // Skip non-object nodes as "extra info"
         if (typeof(current_interface.model[name]) !== "object")
             continue;
-
-        var objnode = current.model[name];
+        console.log(name);
+        var objnode = current_interface.model[name];
         var obj = undefined; // Object to attach
         var container = $("<div></div>");
         container.addClass('obj-config');
@@ -24,22 +26,30 @@ function initControls() {
         root_container.append(container);
         if (objnode["name"] !== undefined) {
             obj = scene.getObjectByName(objnode["name"]);
+            console.log(objnode["name"]);
             $("<h2>" + objnode["show_name"] + "</h2>").appendTo(container);
         }
+        // Crear un color picker si el objeto permite cambio de color.
         if (objnode["color_editable"] !== undefined &&
             objnode["color_editable"] === true) {
             createColorPicker(obj, container);
             container.addClass('color-picker');
         }
+        // Crear una selección de personajes si el objeto permite cambio de textura.
         if (objnode["texture_editable"] !== undefined &&
             objnode["texture_editable"] === true) {
             createTexturePicker(obj, container);
             container.addClass('character-picker');
         }
+        // Añadir el elemento a la lista.
         controllers[objnode.name] = container;
     }
 }
 
+/*
+ * Crear un nuevo selecionador de color. Por defecto crea un input color.
+ * Se enlazará con el objeto utilizando un evento.
+ */
 function createColorPicker(obj, container) {
     var o = $("<input/>");
     o.attr('type', 'color');
@@ -54,6 +64,10 @@ function createColorPicker(obj, container) {
     container.append("<br>");
 }
 
+/*
+ * Crear un nuevo selecionador de textura. Por defecto crea un img.
+ * Se enlazará con el objeto utilizando un evento.
+ */
 function createTexturePicker(obj, container) {
     var o = $("<div/>");
     o.attr('data-name', 'texture-' + obj.name);
@@ -89,12 +103,18 @@ function createTexturePicker(obj, container) {
     });
 }
 
+/*
+ * Cambia el color de un objeto a partir del elemento input color.
+ */
 function colorHelper(obj, picker) {
     var color = new THREE.Color(picker.val());
     obj.material.color = color;
     animate();
 }
 
+/*
+ * Cambia la textura de un objeto por la imagen ubicada en texUrl.
+ */
 function textureHelper(obj, texUrl) {
     setTexture(obj.name, texUrl);
 }
@@ -103,6 +123,10 @@ function textureHelper(obj, texUrl) {
 function showPinatas() {
 }
 
+/*
+ * Muestra los controles de selección de personajes y oculta los demas.
+ * No se recomienda, es mejor mostrar solo aquel que se seleccione.
+ */
 function showCharacterSelection() {
     for (var name in controllers) {
         if (controllers[name].hasClass('character-picker')) {
@@ -113,6 +137,10 @@ function showCharacterSelection() {
     }
 }
 
+/*
+ * Muestra los controles de selección de personajes y oculta los demas.
+ * No se recomienda, es mejor mostrar solo aquel que se seleccione.
+ */
 function showColorSelection() {
     for (var name in controllers) {
         if (controllers[name].hasClass('color-picker')) {

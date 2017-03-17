@@ -60,10 +60,16 @@ THREE.ImageLoader.prototype.load = function (a,b,c,d) {
     return e;
 }
 
+
+function removeOld() {
+    $("#glcanvas").empty();
+    $("#dynamic-controls").empty();
+}
+
 /**
  * init: Inicializa los objetos para la renderización.
  */
-function init(model_id, interface) {
+function init(model_name, interface) {
     /**
      * Se obtiene el contenedor del canvas y se extrae
      * el ancho y se calcula el posible alto.
@@ -82,7 +88,7 @@ function init(model_id, interface) {
      * Se crea el objeto de renderización y se establede un tamaño
      */
     var ratio = window.devicePixelRatio || 1;
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     renderer.setPixelRatio(ratio);
     renderer.setSize(width, height);
     /**
@@ -95,7 +101,7 @@ function init(model_id, interface) {
     addDragDropHandler(canvas);
     container.append(canvas);
     current = interface;
-    loadScene("/api/pinata/models/" + model_id, "/textures/");
+    loadScene("/models/" + model_name, "/textures/");
 }
 
 /**
@@ -156,12 +162,25 @@ function touchObject(evt) {
 }
 
 /**
+ * Permite rotar el modelo desde el nodo padre, despues de la operación realiza
+ * un dibujado de la pantalla.
+ */
+function rotateScene(deltaX, deltaY) {
+    var center = scene.getObjectByName(current_interface.model.center.name);
+    center.rotateOnAxis(new THREE.Vector3(0, 0, 1), deltaX / 100);
+    center.rotateOnAxis(new THREE.Vector3(0, 1, 0), deltaY / 100);
+    animate();
+}
+
+/**
  * Sistema de rotación por eventos del ratón: no aplica touch
  */
 var mouseDown = false,
     mouseX = 0,
     mouseY = 0;
-
+/**
+ * Evento de movimiento. Si esta presionado, se rotara la figura.
+ */
 function onMouseMove(evt) {
     if (!mouseDown) {
         return;
@@ -176,6 +195,9 @@ function onMouseMove(evt) {
     rotateScene(deltaX, deltaY);
 }
 
+/**
+ * Activar modo de rotación.
+ */
 function onMouseDown(evt) {
     evt.preventDefault();
     moved = false;
@@ -184,6 +206,9 @@ function onMouseDown(evt) {
     mouseY = evt.clientY;
 }
 
+/**
+ * Descativar modo de rotación
+ */
 function onMouseUp(evt) {
     evt.preventDefault();
     if (!moved) {
@@ -193,23 +218,22 @@ function onMouseUp(evt) {
     mouseDown = false;
 }
 
+/*
+ * Si el ratón sale del área se desactiva la rotación.
+ */
 function onMouseLeave(evt) {
     evt.preventDefault();
     mouseDown = false;
 }
 
+/**
+ * Inicializar los eventos hacia el canvas.
+ */
 function addMouseHandler(canvas) {
     canvas.addEventListener('mousemove', onMouseMove, false);
     canvas.addEventListener('mousedown', onMouseDown, false);
     canvas.addEventListener('mouseup', onMouseUp, false);
     canvas.addEventListener('mouseleave', onMouseLeave, false);
-}
-
-function rotateScene(deltaX, deltaY) {
-    var center = scene.getObjectByName(current_interface.model.center.name);
-    center.rotateOnAxis(new THREE.Vector3(0, 1, 0), -deltaX / 100);
-    center.rotateOnAxis(new THREE.Vector3(1, 0, 0), deltaY / 100);
-    animate();
 }
 
 /**
@@ -219,6 +243,10 @@ var touchDown = false,
     touchX = 0,
     touchY = 0;
 
+/**
+ * Calcula el movimiento a partir del touch. Rota el modelo
+ * si esta activo y se encuentra dentro del canvas.
+ */
 function onTouchMove(evt) {
     if (!touchDown) {
         return;
@@ -234,6 +262,9 @@ function onTouchMove(evt) {
     touchY = touch.clientY;
 }
 
+/**
+ * Detecta finalización del evento touch o salida del área.
+ */
 function onTouchEnd(evt) {
     evt.preventDefault();
     touchDown = false;
@@ -243,6 +274,9 @@ function onTouchEnd(evt) {
     }
 }
 
+/**
+ * Inicializa el evento de atrastrado y rotación.
+ */
 function onTouchStart(evt) {
     evt.preventDefault();
     touchDown = true;
@@ -252,6 +286,9 @@ function onTouchStart(evt) {
     touchY = touch.clientY;
 }
 
+/**
+ * Asigna los eventos al canvas. Solo aplica en plataformas con touch.
+ */
 function addTouchHandler(canvas) {
     canvas.addEventListener('touchmove', onTouchMove, false);
     canvas.addEventListener('touchend', onTouchEnd, false);
@@ -259,10 +296,23 @@ function addTouchHandler(canvas) {
     canvas.addEventListener('touchleave', onTouchEnd, false);
 }
 
+/**
+ * Eventos drag'n drop.
+ * Permite arrastrar imagenes (texturas) de la lista hacia los elementos
+ * del modelo.
+ */
+
+/**
+ * Desactiva el comportamiento natural, evitando arrastrar el canvas como imagen-
+ */
 function onDragOver(evt) {
     evt.preventDefault();
 }
 
+/**
+ * Captura la información del evento drop a partir de dato "text".
+ * Realiza el llamado a la textura en base al url.
+ */
 function onDrop(evt) {
     evt.preventDefault();
     var data = evt.dataTransfer.getData("text");
@@ -272,6 +322,9 @@ function onDrop(evt) {
     }
 }
 
+/**
+ * Habilita los events para el manejo de drag'n drop en el canvas.
+ */
 function addDragDropHandler(canvas) {
     canvas.addEventListener('dragover', onDragOver, false);
     canvas.addEventListener('drop', onDrop, false);

@@ -13,7 +13,7 @@ var connectionString = app.get('dburl');
  */
 router.get('/models', function(req, res) {
     var results = [];
-    var queryString = 'SELECT id, name, num_points, center FROM pinata_model WHERE 1 = 1 ';
+    var queryString = 'SELECT id, name, num_points, center, location FROM pinata_model WHERE 1 = 1 ';
     var args = [];
     var count = 1;
     if (req.query.name) {
@@ -91,7 +91,7 @@ router.get('/models/:id', function(req, res) {
         });
     });
 });
-router.get('/models/:id/interface', function(req, res) {
+router.get('/interface/:id', function(req, res) {
     var result;
 
     pg.connect(connectionString, function(err, client, done) {

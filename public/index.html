@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es_MX">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/goodparty-theme.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Piñata Interactiva</title>
+    <title>GoodParty</title>
 </head>
 <body>
     <header>
@@ -22,84 +22,29 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Good Party</a>
+                <a class="navbar-brand" href="index.html">Good Party</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Diseño <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Compra</a></li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Búsqueda">
-                    </div>
-                    <button type="submit" class="btn btn-goodparty">Buscar</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Usuario</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sesión <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Cuenta</a></li>
-                            <li><a href="#">Compras</a></li>
-                            <li><a href="#">Historial</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="modelos.html">Diseño</a></li>
+                    <li><a href="contact.html">Contacto</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
         </nav>
     </header>
     <div class="container">
-        <h1>Panel de diseño</h1>
-        <!--
-        <div class="row menu-selection">
-            <div class="col-xs-4">
-                <a link="#" class="btn btn-default" onclick="showPinatas()">Piñatas</a>
-            </div>
-            <div class="col-xs-4">
-                <a link="#" class="btn btn-default" onclick="showCharacterSelection()">Personajes</a>
-            </div>
-            <div class="col-xs-4">
-                <a link="#" class="btn btn-default" onclick="showColorSelection()">Colores</a>
-            </div>
-        </div>
-        -->
         <div class="row">
-            <div class="col-xs-12 col-sm-8 col-md-8">
-                <div id="glcanvas">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4">
-                <div class="help-text">
-                    <p>
-                        Seleccione un elemento de la vista para personalizarlo.
-                    </p>
-                </div>
-                <div id="dynamic-controls">
+            <div class="col-12">
+                <div class="center-image">
+                    <h1>Una nueva manera de diseñar tus piñatas</h1>
+                    <img id="banner" src="images/good.png">
                 </div>
             </div>
         </div>
     </div>
-    <script src="js/vendor/jquery-3.1.0.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/vendor/three.min.js"></script>
-    <script src="js/models.js"></script>
-    <script src="js/scene.js"></script>
-    <script src="js/init.js"></script>
-    <script src="js/edit-model.js"></script>
-    <script src="js/controls.js"></script>
-    <script>
-        // Inicaliza el modelo especificado
-        loadModelList(function() {
-            loadInterface(models[0].id, function() {
-                init(models[0].id, current_interface);
-            })
-        })
-    </script>
+    
 </body>
 </html>

@@ -8,7 +8,7 @@
 }
 
 body {
-    background-color: rgb(255, 255, 120);
+    background-color: #abddd8;
 }
 
 body p {
@@ -16,7 +16,7 @@ body p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #aa00aa;
+    color: #000;
 }
 
 .navbar a {
@@ -29,13 +29,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
     background-color: #dd33dd;
-    border-color: #ffaaff;
+    border-color: #aa00aa;
 }
 
 .navbar-goodparty {
-    background-image: linear-gradient(to bottom, #ff77ff 0, #ff00ff 100%);
+    background-image: linear-gradient(to bottom, #aa77aa 0, #aa00aa 100%);
     background-repeat: repeat-x;
-    border-color: #ffaaff;
+    border-color: #aa00aa;
 }
 
 .navbar-goodparty .icon-bar {
